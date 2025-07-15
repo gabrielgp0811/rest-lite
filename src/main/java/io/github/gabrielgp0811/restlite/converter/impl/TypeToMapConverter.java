@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.gabrielgp0811.restlite.annotation.RestDateTimeFormat;
-import io.github.gabrielgp0811.restlite.constants.Constants;
 import io.github.gabrielgp0811.restlite.converter.Converter;
 import io.github.gabrielgp0811.restlite.exception.RestException;
+import io.github.gabrielgp0811.restlite.util.Constants;
 import io.github.gabrielgp0811.restlite.util.Util;
 
 /**

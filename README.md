@@ -48,8 +48,6 @@ public class MainClass {
             LOGGER.info("Result:" + service.getStringResult());
         } catch (RestException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-
-            return;
         }
     }
 
@@ -65,6 +63,7 @@ package com.myproject.model;
 
 import java.util.Date;
 
+import io.github.gabrielgp0811.restlite.annotation.RestDateTimeFormat;
 import io.github.gabrielgp0811.restlite.annotation.RestService;
 import io.github.gabrielgp0811.restlite.annotation.RestServiceParameter;
 
@@ -75,18 +74,18 @@ import io.github.gabrielgp0811.restlite.annotation.RestServiceParameter;
 
     // OR
 
-	protocol = "https",
-	host = "api.example.com",
-	// port = 80, // Inform port if needed
-	// app = "appname", // Inform appname if needed
-	path = "users",
+    protocol = "https",
+    host = "api.example.com",
+    // port = 80, // Inform port if needed
+    // app = "appname", // Inform appname if needed
+    path = "users",
 
     method = "GET",
     contentType = "application/json", // or application/x-www-form-urlencoded
-	headers = {
-		@RequestHeader(name = "Accept", value = "application/json"),
+    headers = {
+        @RequestHeader(name = "Accept", value = "application/json"),
         // More headers here
-	}
+    }
 )
 @RestService(
     name = "User.findById",
@@ -95,37 +94,37 @@ import io.github.gabrielgp0811.restlite.annotation.RestServiceParameter;
 
     // OR
 
-	protocol = "https",
-	host = "api.example.com",
-	// port = 80, // Inform port if needed
-	// app = "appname", // Inform appname if needed
-	path = "users",
+    protocol = "https",
+    host = "api.example.com",
+    // port = 80, // Inform port if needed
+    // app = "appname", // Inform appname if needed
+    path = "users",
 
     method = "GET",
     contentType = "application/application/x-www-form-urlencoded",
     parameters = {
         @RestServiceParameter(name = "id", type = Integer.class) // Expected type is Integer
     },
-	headers = {
-		@RequestHeader(name = "Accept", value = "application/json"),
+    headers = {
+        @RequestHeader(name = "Accept", value = "application/json"),
         // More headers here
-	}
+    }
 )
 public class User implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	private Integer id = null;
+    private Integer id = null;
 
-	private String username = null;
+    private String username = null;
 
-	private String password = null;
+    private String password = null;
 
-    @JsonPattern(value = "yyyy-MM-dd")
-	private Date birthDate = null;
+    @RestDateTimeFormat("yyyy-MM-dd")
+    private Date birthDate = null;
 
     // ...getters and setters...
 
@@ -144,11 +143,24 @@ import com.myproject.model.User;
 import io.github.gabrielgp0811.restlite.consumer.ServiceConsumer;
 import io.github.gabrielgp0811.restlite.exception.RestException;
 import io.github.gabrielgp0811.restlite.service.RestService;
+import io.github.gabrielgp0811.restlite.util.Constants;
 
 public class UserConsumer extends ServiceConsumer<User> {
 
+    static {
+        // It's possible to use system property below
+        // to inform the location of classes
+        System.setProperty("restlite.packagename", "com.myproject.model");
+        // or
+        System.setProperty(Constants.PACKAGE_NAME_PROPERTY, "com.myproject.model");
+
+        // You can inform more than one package by separating them with semicolon
+        System.setProperty(Constants.PACKAGE_NAME_PROPERTY, "com.myproject.model;com.myotherproject.model");
+    }
+
     public UserConsumer() {
-        // It's possible to inform package name where classes
+        // In case the static constructor above is not used,
+        // it's possible to inform package name where classes
         // containing @RestService annotations are located
         super("com.myproject.model");
     }
@@ -163,9 +175,9 @@ public class UserConsumer extends ServiceConsumer<User> {
         return users;
     }
 
-	public User findById(Integer id) throws RestException {
-		return getTypedSingleResult("User.findById", "id", id);
-	}
+    public User findById(Integer id) throws RestException {
+        return getTypedSingleResult("User.findById", "id", id);
+    }
 
 }
 ```
@@ -177,6 +189,7 @@ package com.myproject.model;
 
 import java.util.Date;
 
+import io.github.gabrielgp0811.restlite.annotation.RestDateTimeFormat;
 import io.github.gabrielgp0811.restlite.annotation.RestService;
 import io.github.gabrielgp0811.restlite.annotation.RestServiceParameter;
 import io.github.gabrielgp0811.restlite.annotation.RestServices;
@@ -186,43 +199,43 @@ import io.github.gabrielgp0811.restlite.annotation.RestServices;
 
     // OR
 
-	protocol = "https",
-	host = "api.example.com",
-	// port = 80, // Inform port if needed
-	// app = "appname", // Inform appname if needed
-	path = "users",
+    protocol = "https",
+    host = "api.example.com",
+    // port = 80, // Inform port if needed
+    // app = "appname", // Inform appname if needed
+    path = "users",
 
-	method = "GET",
-	headers = {
-		@RequestHeader(name = "Accept", value = "application/json"),
-	},
-	value = {
-		@RestService(name = "User.findAll"),
-		@RestService(
-			name = "User.findById",
+    method = "GET",
+    headers = {
+        @RequestHeader(name = "Accept", value = "application/json"),
+    },
+    value = {
+        @RestService(name = "User.findAll"),
+        @RestService(
+            name = "User.findById",
             method = "GET", // You can overwrite HTTP method
-			contentType = "application/x-www-form-urlencoded",
-			parameters = {
-				@RestServiceParameter(name = "id", type = Integer.class)
-			}
-		),
+            contentType = "application/x-www-form-urlencoded",
+            parameters = {
+                @RestServiceParameter(name = "id", type = Integer.class)
+            }
+        ),
     }
 )
 public class User implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	private Integer id = null;
+    private Integer id = null;
 
-	private String username = null;
+    private String username = null;
 
-	private String password = null;
+    private String password = null;
 
-    @JsonPattern(value = "yyyy-MM-dd")
-	private Date birthDate = null;
+    @RestDateTimeFormat("yyyy-MM-dd")
+    private Date birthDate = null;
 
     // ...getters and setters...
 
@@ -235,7 +248,7 @@ Check [UserConsumerTest][demo] class for more information.
 
 ## Feedback
 
-If you have any feedback, please reach out to me at gabrielgp0811@gmail.com
+If you have any feedback, please reach out to me at gabrielgp0811@gmail.com.
 
 [contributors-shield]: https://img.shields.io/github/contributors/gabrielgp0811/rest-lite.svg?style=for-the-badge
 [contributors-url]: https://github.com/gabrielgp0811/rest-lite/graphs/contributors

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package io.github.gabrielgp0811.restlite.constants;
+package io.github.gabrielgp0811.restlite.util;
 
 /**
  * @author gabrielgp0811

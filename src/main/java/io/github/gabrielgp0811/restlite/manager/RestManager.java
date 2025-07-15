@@ -28,7 +28,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import io.github.gabrielgp0811.restlite.constants.Constants;
 import io.github.gabrielgp0811.restlite.converter.impl.RestServiceConverter;
 import io.github.gabrielgp0811.restlite.converter.impl.RestServicesConverter;
 import io.github.gabrielgp0811.restlite.exception.RestException;
@@ -39,6 +38,7 @@ import io.github.gabrielgp0811.restlite.service.impl.RestServiceImpl;
 import io.github.gabrielgp0811.restlite.service.impl.TypedRestServiceImpl;
 import io.github.gabrielgp0811.restlite.to.RestServiceTO;
 import io.github.gabrielgp0811.restlite.to.RestServicesTO;
+import io.github.gabrielgp0811.restlite.util.Constants;
 
 /**
  * The main implementation of interface {@link RestManager}.
