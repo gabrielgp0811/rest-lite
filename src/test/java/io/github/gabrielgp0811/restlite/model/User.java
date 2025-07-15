@@ -99,7 +99,6 @@ import io.github.gabrielgp0811.restlite.annotation.RestServices;
 			method = "PUT",
 			contentType = "application/json",
 			parameters = {
-				@RestServiceParameter(name = "id", type = Integer.class),
 				@RestServiceParameter(name = "username", type = String.class),
 				@RestServiceParameter(name = "password", type = String.class),
 				@RestServiceParameter(
