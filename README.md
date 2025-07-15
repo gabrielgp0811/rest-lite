@@ -101,7 +101,7 @@ import io.github.gabrielgp0811.restlite.annotation.RestServiceParameter;
     path = "users",
 
     method = "GET",
-    contentType = "application/application/x-www-form-urlencoded",
+    contentType = "application/x-www-form-urlencoded",
     parameters = {
         @RestServiceParameter(name = "id", type = Integer.class) // Expected type is Integer
     },
