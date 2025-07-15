@@ -50,7 +50,9 @@ public class UserConsumer extends ServiceConsumer<User> {
 	public String postAsJson(User user) throws RestException {
 		RestService service = manager.createService("User.postAsJson");
 
-		service.setParameter("user", user);
+		service.setParameter("username", user.getUsername());
+		service.setParameter("password", user.getPassword());
+		service.setParameter("birthDate", user.getBirthDate());
 
 		return service.getStringResult();
 	}
@@ -58,7 +60,10 @@ public class UserConsumer extends ServiceConsumer<User> {
 	public String put(User user) throws RestException {
 		RestService service = manager.createService("User.put");
 
-		service.setParameter("user", user);
+		service.setParameter("id", user.getId());
+		service.setParameter("username", user.getUsername());
+		service.setParameter("password", user.getPassword());
+		service.setParameter("birthDate", user.getBirthDate());
 
 		return service.getStringResult();
 	}
@@ -67,15 +72,9 @@ public class UserConsumer extends ServiceConsumer<User> {
 		RestService service = manager.createService("User.putPathId");
 
 		service.setParameter("id", id);
-		service.setParameter("user", user);
-
-		return service.getStringResult();
-	}
-
-	public String delete(User user) throws RestException {
-		RestService service = manager.createService("User.delete");
-
-		service.setParameter("user", user);
+		service.setParameter("username", user.getUsername());
+		service.setParameter("password", user.getPassword());
+		service.setParameter("birthDate", user.getBirthDate());
 
 		return service.getStringResult();
 	}

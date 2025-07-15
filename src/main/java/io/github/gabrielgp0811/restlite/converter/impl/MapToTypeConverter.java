@@ -21,10 +21,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import io.github.gabrielgp0811.jsonlite.annotation.JsonPattern;
-import io.github.gabrielgp0811.jsonlite.util.Util;
+import io.github.gabrielgp0811.restlite.annotation.RestDateTimeFormat;
+import io.github.gabrielgp0811.restlite.constants.Constants;
 import io.github.gabrielgp0811.restlite.converter.Converter;
 import io.github.gabrielgp0811.restlite.exception.RestException;
+import io.github.gabrielgp0811.restlite.util.Util;
 
 /**
  * Class responsible for converting {@link java.util.Map} into object of type
@@ -91,8 +92,8 @@ public class MapToTypeConverter<T> implements Converter<Map<String, Object>, T> 
 					String locale = null;
 					String timezone = null;
 
-					if (field.isAnnotationPresent(JsonPattern.class)) {
-						JsonPattern dateTimeFormat = field.getAnnotation(JsonPattern.class);
+					if (field.isAnnotationPresent(RestDateTimeFormat.class)) {
+						RestDateTimeFormat dateTimeFormat = field.getAnnotation(RestDateTimeFormat.class);
 
 						pattern = dateTimeFormat.value();
 						locale = dateTimeFormat.locale();
@@ -101,18 +102,18 @@ public class MapToTypeConverter<T> implements Converter<Map<String, Object>, T> 
 
 					if (Util.isDate(parameterType)) {
 						if (pattern == null || pattern.trim().isEmpty())
-							pattern = "EEE MMM dd HH:mm:ss zzz yyyy";
+							pattern = Constants.DEFAULT_DATE_PATTERN;
 
 						try {
 							DateFormat formatter = null;
 
-							if (locale != null) {
+							if (locale != null && !locale.trim().isEmpty()) {
 								formatter = new SimpleDateFormat(pattern, Util.toLocale(locale));
 							} else {
 								formatter = new SimpleDateFormat(pattern);
 							}
 
-							if (timezone != null) {
+							if (timezone != null && !timezone.trim().isEmpty()) {
 								formatter.setTimeZone(Util.toTimeZone(timezone));
 							}
 
@@ -120,22 +121,24 @@ public class MapToTypeConverter<T> implements Converter<Map<String, Object>, T> 
 						} catch (NullPointerException | ParseException | IllegalArgumentException e) {
 							try {
 								value = new SimpleDateFormat(pattern).parse(date);
-							} catch (ParseException e1) {
+							} catch (ParseException | IllegalArgumentException e1) {
+								try {
+									value = new SimpleDateFormat(Constants.DEFAULT_DATE_PATTERN).parse(date);
+								} catch (ParseException | IllegalArgumentException e2) {
+								}
 							}
 						}
 					}
 
 					if (Util.isLocalDate(parameterType)) {
 						if (pattern == null || pattern.trim().isEmpty())
-							pattern = "yyyy-MM-dd";
+							pattern = Constants.DEFAULT_LOCALDATE_PATTERN;
 
 						try {
-							DateTimeFormatter formatter = null;
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 
-							if (locale != null) {
-								formatter = DateTimeFormatter.ofPattern(pattern, Util.toLocale(locale));
-							} else {
-								formatter = DateTimeFormatter.ofPattern(pattern);
+							if (locale != null && !locale.trim().isEmpty()) {
+								formatter = formatter.withLocale(Util.toLocale(locale));
 							}
 
 							value = LocalDate.parse(date, formatter);
@@ -149,15 +152,13 @@ public class MapToTypeConverter<T> implements Converter<Map<String, Object>, T> 
 
 					if (Util.isLocalTime(parameterType)) {
 						if (pattern == null || pattern.trim().isEmpty())
-							pattern = "HH:mm:ss";
+							pattern = Constants.DEFAULT_LOCALTIME_PATTERN;
 
 						try {
-							DateTimeFormatter formatter = null;
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 
-							if (locale != null) {
-								formatter = DateTimeFormatter.ofPattern(pattern, Util.toLocale(locale));
-							} else {
-								formatter = DateTimeFormatter.ofPattern(pattern);
+							if (locale != null && !locale.trim().isEmpty()) {
+								formatter = formatter.withLocale(Util.toLocale(locale));
 							}
 
 							value = LocalDate.parse(date, formatter);
@@ -171,15 +172,13 @@ public class MapToTypeConverter<T> implements Converter<Map<String, Object>, T> 
 
 					if (Util.isLocalDateTime(parameterType)) {
 						if (pattern == null || pattern.trim().isEmpty())
-							pattern = "yyyy-MM-dd'T'HH:mm:ss";
+							pattern = Constants.DEFAULT_LOCALDATETIME_PATTERN;
 
 						try {
-							DateTimeFormatter formatter = null;
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 
-							if (locale != null) {
-								formatter = DateTimeFormatter.ofPattern(pattern, Util.toLocale(locale));
-							} else {
-								formatter = DateTimeFormatter.ofPattern(pattern);
+							if (locale != null && !locale.trim().isEmpty()) {
+								formatter = formatter.withLocale(Util.toLocale(locale));
 							}
 
 							value = LocalDate.parse(date, formatter);

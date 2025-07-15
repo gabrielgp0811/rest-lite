@@ -187,10 +187,10 @@ public interface RestService {
 
 	/**
 	 * @param name     The parameter's name.
-	 * @param timezone The TimeZone.
+	 * @param timezone The Timezone.
 	 * @return This REST Service (Fluent interface).
 	 */
-	RestService setParameterTimeZone(String name, String timezone);
+	RestService setParameterTimezone(String name, String timezone);
 
 	/**
 	 * @param name  The parameter's name.

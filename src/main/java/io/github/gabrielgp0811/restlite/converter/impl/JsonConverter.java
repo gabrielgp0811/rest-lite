@@ -5,17 +5,13 @@ package io.github.gabrielgp0811.restlite.converter.impl;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import io.github.gabrielgp0811.jsonlite.Json;
-import io.github.gabrielgp0811.jsonlite.JsonEntry;
-import io.github.gabrielgp0811.jsonlite.impl.JsonObject;
 import io.github.gabrielgp0811.restlite.converter.Converter;
 import io.github.gabrielgp0811.restlite.exception.RestException;
-import io.github.gabrielgp0811.restlite.to.DateTimeFormatTO;
 import io.github.gabrielgp0811.restlite.to.RestServiceParameterTO;
 
 /**
@@ -66,83 +62,45 @@ public class JsonConverter implements Converter<Collection<RestServiceParameterT
 							+ parameter.getType().getName() + "'.");
 		}
 
+		Converter<Map<String, Object>, String> mapToJson = new MapToJsonConverter();
+
 		if (input.size() == 1) {
+			Converter<RestServiceParameterTO, Map<String, Object>> parameterToMap = new RestServiceParameterToMapConverter();
+
 			return input.stream()
 					.filter(Objects::nonNull)
 					.filter(p -> !p.getName().trim().isEmpty())
-					.map(this::toJson)
+					.map(p -> {
+						try {
+							return parameterToMap.convert(p);
+						} catch (RestException e) {
+							return null;
+						}
+					})
 					.filter(Objects::nonNull)
-					.map(json -> json.toString())
-					.findFirst()
-					.get();
+					.map(m -> {
+						try {
+							return mapToJson.convert(m);
+						} catch (RestException e) {
+							return null;
+						}
+					})
+					.filter(Objects::nonNull)
+					.collect(Collectors.joining(",", "{", "}"));
 		}
 
-		JsonObject json = new JsonObject();
+		Converter<Collection<RestServiceParameterTO>, Collection<Map<String, Object>>> parametersToMaps = new RestServiceParametersToMapConverter();
 
-		input.stream()
-			.filter(Objects::nonNull)
-			.filter(p -> !p.getName().trim().isEmpty())
-			.map(this::toJson)
-			.forEach(json::addChild);
-
-		return json.toString();
-	}
-
-	/**
-	 * Converts <code>parameter</code> into a JSON object.
-	 * 
-	 * @param parameter The parameter.
-	 * @return The converted JSON object.
-	 */
-	private JsonEntry<?> toJson(RestServiceParameterTO parameter) {
-		return toJson(new ArrayList<>(Arrays.asList(parameter.getName().split("[.]"))), parameter.getValue(),
-				parameter.getDateTimeFormat());
-	}
-
-	/**
-	 * Converts <code>obj</code> into a JSON object of name contained in recursive
-	 * attribute's names using <code>pattern</code>, <code>locale</code> and
-	 * <code>timezone</code>.
-	 * Take code below as an example:
-	 * 
-	 * <pre>
-	 * String json = new JsonConverter().convert(Arrays.asList(
-	 * 		new RestServiceParameterTO("user.id", 123, Integer.class),
-	 * 		new RestServiceParameterTO("user.username", "user123", String.class)
-	 * 	)
-	 * );
-	 * </pre>
-	 * 
-	 * The value of <code>json</code> will be:
-	 * 
-	 * <pre>
-	 * {
-	 * 	"user": {
-	 * 		"id": 123,
-	 * 		"username": "user123"
-	 * 	}
-	 * }
-	 * </pre>
-	 * 
-	 * @param names          The attribute name contained in attribute's names
-	 *                       (recursive).
-	 * @param obj            The object.
-	 * @param dateTimeFormat The date/time format.
-	 * @return The converted JSON object.
-	 */
-	private JsonEntry<?> toJson(List<String> names, Object obj, DateTimeFormatTO dateTimeFormat) {
-		if (names.isEmpty()) {
-			return null;
-		}
-
-		String name = names.remove(0);
-
-		if (!names.isEmpty()) {
-			return new JsonObject(name).addChild(toJson(names, obj, dateTimeFormat));
-		}
-
-		return Json.toJson(name, obj, dateTimeFormat.getPattern(), dateTimeFormat.getLocale(),
-				dateTimeFormat.getTimezone());
+		return parametersToMaps.convert(input).stream()
+				.map(p -> {
+					try {
+						return mapToJson.convert(p);
+					} catch (RestException e) {
+						return null;
+					}
+				})
+				.filter(Objects::nonNull)
+				.collect(Collectors.joining(",", "{", "}"));
 	}
 
 }

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import io.github.gabrielgp0811.restlite.converter.Converter;
 import io.github.gabrielgp0811.restlite.exception.RestException;
 import io.github.gabrielgp0811.restlite.to.RestServiceParameterTO;
-import io.github.gabrielgp0811.jsonlite.util.Util;
+import io.github.gabrielgp0811.restlite.util.Util;
 
 /**
  * Main converter for Content-Type <strong>application/x-www-form-urlencoded</strong>.
@@ -89,7 +89,7 @@ public class FormUrlEncodedConverter implements Converter<Collection<RestService
 				}
 
 				return Arrays.stream(array)
-						.map(elem -> new RestServiceParameterTO(name, elem, elem.getClass(), parameter.getDateTimeFormat()))
+						.map(elem -> new RestServiceParameterTO(name, elem, parameter.getDateTimeFormat()))
 						.map(this::getParameter)
 						.collect(Collectors.joining("&"));
 			} catch (IllegalArgumentException e) {
@@ -99,7 +99,7 @@ public class FormUrlEncodedConverter implements Converter<Collection<RestService
 				Collection<?> list = (Collection<?>) value;
 
 				return list.stream()
-						.map(elem -> new RestServiceParameterTO(name, elem, elem.getClass(), parameter.getDateTimeFormat()))
+						.map(elem -> new RestServiceParameterTO(name, elem, parameter.getDateTimeFormat()))
 						.map(this::getParameter)
 						.collect(Collectors.joining("&"));
 			} catch (ClassCastException e) {

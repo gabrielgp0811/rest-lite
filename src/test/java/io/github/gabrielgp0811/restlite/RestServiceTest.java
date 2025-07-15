@@ -24,6 +24,9 @@ public class RestServiceTest {
 
 	private static final Logger LOGGER = Logger.getLogger(RestServiceTest.class.getName());
 
+	/**
+	 * URL acquired from {@link https://restful-api.dev/}.
+	 */
 	private static final String API_REST_URL = "https://api.restful-api.dev/objects";
 
 	private static RestManager restManager = null;

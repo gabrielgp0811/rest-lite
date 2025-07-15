@@ -3,7 +3,12 @@
  */
 package io.github.gabrielgp0811.restlite;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -16,6 +21,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import io.github.gabrielgp0811.restlite.converter.impl.FormUrlEncodedConverter;
 import io.github.gabrielgp0811.restlite.converter.impl.JsonConverter;
 import io.github.gabrielgp0811.restlite.exception.RestException;
+import io.github.gabrielgp0811.restlite.model.User;
 import io.github.gabrielgp0811.restlite.to.DateTimeFormatTO;
 import io.github.gabrielgp0811.restlite.to.RestServiceParameterTO;
 
@@ -45,24 +51,22 @@ public class ConvertersTest {
 	@Order(1)
 	public void testFormUrlEncodedConvert() throws RestException {
 		LOGGER.info(new FormUrlEncodedConverter().convert(Arrays.asList(
-				new RestServiceParameterTO("test", "test123", String.class),
-				new RestServiceParameterTO("number", 123, Integer.class),
-				new RestServiceParameterTO("conditionTrue", true, Boolean.class),
-				new RestServiceParameterTO("conditionFalse", false, Boolean.class),
-				new RestServiceParameterTO("stringArray", new String[] { "first", "second", "third" }, String[].class),
-				new RestServiceParameterTO("dateArray1", new java.time.LocalDate[] { java.time.LocalDate.now(), java.time.LocalDate.of(1990, 1, 20) }, java.time.LocalDate[].class),
-				new RestServiceParameterTO("dateArray2", new java.time.LocalDate[] { java.time.LocalDate.now(), java.time.LocalDate.of(1990, 1, 20) }, java.time.LocalDate[].class, new DateTimeFormatTO("MM/dd/yyyy")),
-				new RestServiceParameterTO("date1", new java.util.Date(), java.util.Date.class),
-				new RestServiceParameterTO("date2", new java.util.Date(), java.util.Date.class, new DateTimeFormatTO("yyyy-MM-dd")),
-				new RestServiceParameterTO("localDate1", java.time.LocalDate.now(), java.time.LocalDate.class),
-				new RestServiceParameterTO("localDate2", java.time.LocalDate.now(), java.time.LocalDate.class, new DateTimeFormatTO("MM/dd")),
-				new RestServiceParameterTO("localTime1", java.time.LocalTime.now(), java.time.LocalTime.class),
-				new RestServiceParameterTO("localTime2", java.time.LocalTime.now(), java.time.LocalTime.class, new DateTimeFormatTO("hh:mm a")),
-				new RestServiceParameterTO("localDateTime1", java.time.LocalDateTime.now(), java.time.LocalDateTime.class),
-				new RestServiceParameterTO("localDateTime2", java.time.LocalDateTime.now(), java.time.LocalDateTime.class, new DateTimeFormatTO("MM/dd/yyyy hh:mm:ss.SSS a")),
-				new RestServiceParameterTO("localDateTime2", java.time.LocalDateTime.now(), java.time.LocalDateTime.class, new DateTimeFormatTO("yyyy-MM-dd'T'HH:mm:ss.SSS")),
-				new RestServiceParameterTO("user.id", 123, Integer.class),
-				new RestServiceParameterTO("user.username", "user123", String.class)
+				new RestServiceParameterTO("test", "test123"),
+				new RestServiceParameterTO("number", 123),
+				new RestServiceParameterTO("conditionTrue", true),
+				new RestServiceParameterTO("conditionFalse", false),
+				new RestServiceParameterTO("stringArray", new String[] { "first", "second", "third" }),
+				new RestServiceParameterTO("dateArray1", new LocalDate[] { LocalDate.now(), LocalDate.of(1990, 1, 20) }),
+				new RestServiceParameterTO("dateArray2", new LocalDate[] { LocalDate.now(), LocalDate.of(1990, 1, 20) }, new DateTimeFormatTO("MM/dd/yyyy")),
+				new RestServiceParameterTO("date1", new Date()),
+				new RestServiceParameterTO("date2", new Date(), new DateTimeFormatTO("yyyy-MM-dd")),
+				new RestServiceParameterTO("localDate1", LocalDate.now()),
+				new RestServiceParameterTO("localDate2", LocalDate.now(), new DateTimeFormatTO("MM/dd")),
+				new RestServiceParameterTO("localTime1", LocalTime.now()),
+				new RestServiceParameterTO("localTime2", LocalTime.now(), new DateTimeFormatTO("hh:mm a")),
+				new RestServiceParameterTO("localDateTime1", LocalDateTime.now()),
+				new RestServiceParameterTO("localDateTime2", LocalDateTime.now(), new DateTimeFormatTO("MM/dd/yyyy hh:mm:ss.SSS a")),
+				new RestServiceParameterTO("localDateTime2", LocalDateTime.now(), new DateTimeFormatTO("yyyy-MM-dd'T'HH:mm:ss.SSS"))
 		)));
 	}
 
@@ -76,24 +80,23 @@ public class ConvertersTest {
 	@Order(2)
 	public void testJsonConvert() throws RestException {
 		LOGGER.info(new JsonConverter().convert(Arrays.asList(
-				new RestServiceParameterTO("test", "test123", String.class),
-				new RestServiceParameterTO("number", 123, Integer.class),
-				new RestServiceParameterTO("conditionTrue", true, Boolean.class),
-				new RestServiceParameterTO("conditionFalse", false, Boolean.class),
-				new RestServiceParameterTO("stringArray", new String[] { "first", "second", "third" }, String[].class),
-				new RestServiceParameterTO("dateArray1", new java.time.LocalDate[] { java.time.LocalDate.now(), java.time.LocalDate.of(1990, 1, 20) }, java.time.LocalDate[].class),
-				new RestServiceParameterTO("dateArray2", new java.time.LocalDate[] { java.time.LocalDate.now(), java.time.LocalDate.of(1990, 1, 20) }, java.time.LocalDate[].class, new DateTimeFormatTO("MM/dd/yyyy")),
-				new RestServiceParameterTO("date1", new java.util.Date(), java.util.Date.class),
-				new RestServiceParameterTO("date2", new java.util.Date(), java.util.Date.class, new DateTimeFormatTO("yyyy-MM-dd")),
-				new RestServiceParameterTO("localDate1", java.time.LocalDate.now(), java.time.LocalDate.class),
-				new RestServiceParameterTO("localDate2", java.time.LocalDate.now(), java.time.LocalDate.class, new DateTimeFormatTO("MM/dd")),
-				new RestServiceParameterTO("localTime1", java.time.LocalTime.now(), java.time.LocalTime.class),
-				new RestServiceParameterTO("localTime2", java.time.LocalTime.now(), java.time.LocalTime.class, new DateTimeFormatTO("hh:mm a")),
-				new RestServiceParameterTO("localDateTime1", java.time.LocalDateTime.now(), java.time.LocalDateTime.class),
-				new RestServiceParameterTO("localDateTime2", java.time.LocalDateTime.now(), java.time.LocalDateTime.class, new DateTimeFormatTO("MM/dd/uuuu hh:mm:ss.SSS a")),
-				new RestServiceParameterTO("localDateTime2", java.time.LocalDateTime.now(), java.time.LocalDateTime.class, new DateTimeFormatTO("uuuu-MM-dd'T'HH:mm:ss.SSS")),
-				new RestServiceParameterTO("user.id", 123, Integer.class),
-				new RestServiceParameterTO("user.username", "user123", String.class)
+				new RestServiceParameterTO("test", "test123"),
+				new RestServiceParameterTO("number", 123),
+				new RestServiceParameterTO("conditionTrue", true),
+				new RestServiceParameterTO("conditionFalse", false),
+				new RestServiceParameterTO("stringArray", new String[] { "first", "second", "third" }),
+				new RestServiceParameterTO("dateArray1", new LocalDate[] { LocalDate.now(), LocalDate.of(1990, 1, 20) }),
+				new RestServiceParameterTO("dateArray2", new LocalDate[] { LocalDate.now(), LocalDate.of(1990, 1, 20) }, new DateTimeFormatTO("MM/dd/yyyy")),
+				new RestServiceParameterTO("date1", new Date()),
+				new RestServiceParameterTO("date2", new Date(), new DateTimeFormatTO("yyyy-MM-dd")),
+				new RestServiceParameterTO("localDate1", LocalDate.now()),
+				new RestServiceParameterTO("localDate2", LocalDate.now(), new DateTimeFormatTO("MM/dd")),
+				new RestServiceParameterTO("localTime1", LocalTime.now()),
+				new RestServiceParameterTO("localTime2", LocalTime.now(), new DateTimeFormatTO("hh:mm a")),
+				new RestServiceParameterTO("localDateTime1", LocalDateTime.now()),
+				new RestServiceParameterTO("localDateTime2", LocalDateTime.now(), new DateTimeFormatTO("MM/dd/uuuu hh:mm:ss.SSS a")),
+				new RestServiceParameterTO("localDateTime2", LocalDateTime.now(), new DateTimeFormatTO("uuuu-MM-dd'T'HH:mm:ss.SSS")),
+				new RestServiceParameterTO("user", new User(1, "gabrielgp0811", "password123", Date.from(LocalDate.of(1987, 11, 8).atStartOfDay(ZoneId.systemDefault()).toInstant())))
 		)));
 	}
 

@@ -9,8 +9,8 @@ import static java.net.HttpURLConnection.HTTP_OK;
 import java.io.Serializable;
 import java.util.Date;
 
-import io.github.gabrielgp0811.jsonlite.annotation.JsonPattern;
 import io.github.gabrielgp0811.restlite.annotation.RequestHeader;
+import io.github.gabrielgp0811.restlite.annotation.RestDateTimeFormat;
 import io.github.gabrielgp0811.restlite.annotation.RestService;
 import io.github.gabrielgp0811.restlite.annotation.RestServiceParameter;
 import io.github.gabrielgp0811.restlite.annotation.RestServices;
@@ -58,7 +58,7 @@ import io.github.gabrielgp0811.restlite.annotation.RestServices;
 				@RestServiceParameter(
 					name = "birthDate",
 					type = Date.class,
-					dateTimeFormat = @JsonPattern("yyyy-MM-dd")
+					dateTimeFormat = @RestDateTimeFormat("yyyy-MM-dd")
 				),
 			},
 			expectedStatusCodes = { HTTP_OK, HTTP_CREATED }
@@ -68,7 +68,13 @@ import io.github.gabrielgp0811.restlite.annotation.RestServices;
 			method = "POST",
 			contentType = "application/json",
 			parameters = {
-				@RestServiceParameter(name = "user", type = User.class)
+				@RestServiceParameter(name = "username", type = String.class),
+				@RestServiceParameter(name = "password", type = String.class),
+				@RestServiceParameter(
+					name = "birthDate",
+					type = Date.class,
+					dateTimeFormat = @RestDateTimeFormat("yyyy-MM-dd")
+				),
 			},
 			expectedStatusCodes = { HTTP_OK, HTTP_CREATED }
 		),
@@ -77,7 +83,14 @@ import io.github.gabrielgp0811.restlite.annotation.RestServices;
 			method = "PUT",
 			contentType = "application/json",
 			parameters = {
-				@RestServiceParameter(name = "user", type = User.class)
+				@RestServiceParameter(name = "id", type = Integer.class),
+				@RestServiceParameter(name = "username", type = String.class),
+				@RestServiceParameter(name = "password", type = String.class),
+				@RestServiceParameter(
+					name = "birthDate",
+					type = Date.class,
+					dateTimeFormat = @RestDateTimeFormat("yyyy-MM-dd")
+				),
 			}
 		),
 		@RestService(
@@ -86,15 +99,14 @@ import io.github.gabrielgp0811.restlite.annotation.RestServices;
 			method = "PUT",
 			contentType = "application/json",
 			parameters = {
-				@RestServiceParameter(name = "user", type = User.class)
-			}
-		),
-		@RestService(
-			name = "User.delete",
-			method = "DELETE",
-			contentType = "application/json",
-			parameters = {
-				@RestServiceParameter(name = "user", type = User.class)
+				@RestServiceParameter(name = "id", type = Integer.class),
+				@RestServiceParameter(name = "username", type = String.class),
+				@RestServiceParameter(name = "password", type = String.class),
+				@RestServiceParameter(
+					name = "birthDate",
+					type = Date.class,
+					dateTimeFormat = @RestDateTimeFormat("yyyy-MM-dd")
+				),
 			}
 		),
 		@RestService(
@@ -128,7 +140,7 @@ public class User implements Serializable {
 
 	private String password = null;
 
-	@JsonPattern("yyyy-MM-dd")
+	@RestDateTimeFormat("yyyy-MM-dd")
 	private Date birthDate = null;
 
 	public User() {

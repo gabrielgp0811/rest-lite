@@ -10,8 +10,6 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import io.github.gabrielgp0811.jsonlite.annotation.JsonPattern;
-
 /**
  * Annotation responsible for the REST service parameter.
  * 
@@ -35,7 +33,7 @@ public @interface RestServiceParameter {
 	/**
 	 * @return The date/time format.
 	 */
-	JsonPattern dateTimeFormat() default @JsonPattern;
+	RestDateTimeFormat dateTimeFormat() default @RestDateTimeFormat;
 
 	/**
 	 * @return <strong><span style="color:#7f0055">true</span></strong> if optional;

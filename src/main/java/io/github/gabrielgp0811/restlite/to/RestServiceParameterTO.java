@@ -35,24 +35,22 @@ public class RestServiceParameterTO implements Serializable {
 	/**
 	 * @param name  the name
 	 * @param value the value
-	 * @param type  the type
 	 */
-	public RestServiceParameterTO(String name, Object value, Class<?> type) {
+	public RestServiceParameterTO(String name, Object value) {
 		this.name = name;
 		this.value = value;
-		this.type = type;
+		this.type = value == null ? null : value.getClass();
 	}
 
 	/**
 	 * @param name           the name
 	 * @param value          the value
-	 * @param type           the type
 	 * @param dateTimeFormat the dateTimeFormat
 	 */
-	public RestServiceParameterTO(String name, Object value, Class<?> type, DateTimeFormatTO dateTimeFormat) {
+	public RestServiceParameterTO(String name, Object value, DateTimeFormatTO dateTimeFormat) {
 		this.name = name;
 		this.value = value;
-		this.type = type;
+		this.type = value == null ? null : value.getClass();
 		this.dateTimeFormat = dateTimeFormat;
 	}
 

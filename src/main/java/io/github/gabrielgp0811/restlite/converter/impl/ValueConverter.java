@@ -5,10 +5,10 @@ package io.github.gabrielgp0811.restlite.converter.impl;
 
 import java.time.DateTimeException;
 
-import io.github.gabrielgp0811.jsonlite.util.Util;
 import io.github.gabrielgp0811.restlite.converter.Converter;
 import io.github.gabrielgp0811.restlite.exception.RestException;
 import io.github.gabrielgp0811.restlite.to.RestServiceParameterTO;
+import io.github.gabrielgp0811.restlite.util.Util;
 
 /**
  * Class responsible for converting value contained in

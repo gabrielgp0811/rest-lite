@@ -44,25 +44,25 @@ public class UserConsumerTest {
 		LogManager.getLogManager().readConfiguration();
 
 		ProcessBuilder pb = new ProcessBuilder("java", "-jar", "rest-server-1.0.0.jar");
-		
+
 		String pathname = Thread.currentThread().getContextClassLoader().getResource("").getFile();
 
 		pb.directory(new File(pathname));
 
 		process = pb.start();
 
-		try(BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String line;
-            int index = 0;
+		try (BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+			String line;
+			int index = 0;
 
-            while ((line = input.readLine()) != null) {
-                System.out.println(line);
-                index++;
+			while ((line = input.readLine()) != null) {
+				System.out.println(line);
+				index++;
 
-                if (index == 18) // Total number of lines when launching rest-server JAR
-                	break;
-            }
-        }
+				if (index == 18) // Total number of lines when launching rest-server JAR
+					break;
+			}
+		}
 
 		consumer = new UserConsumer();
 	}

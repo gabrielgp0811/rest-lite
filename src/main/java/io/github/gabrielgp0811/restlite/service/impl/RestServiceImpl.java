@@ -291,7 +291,7 @@ public class RestServiceImpl implements RestService {
 	}
 
 	@Override
-	public RestService setParameterTimeZone(String name, String timezone) {
+	public RestService setParameterTimezone(String name, String timezone) {
 		RestServiceParameterTO to = getParameter(name);
 
 		if (to.getName().isEmpty()) {
